@@ -1,0 +1,27 @@
+message_mapping:
+  google.protobuf.Any: proto2ros/AnyProto
+  google.protobuf.Timestamp: builtin_interfaces/Time
+  google.protobuf.Duration: builtin_interfaces/Duration
+  google.protobuf.DoubleValue: std_msgs/Float64
+  google.protobuf.FloatValue: std_msgs/Float32
+  google.protobuf.Int64Value: std_msgs/Int64
+  google.protobuf.UInt64Value: std_msgs/UInt64
+  google.protobuf.Int32Value: std_msgs/Int32
+  google.protobuf.UInt32Value: std_msgs/UInt32
+  google.protobuf.BoolValue: std_msgs/Bool
+  google.protobuf.StringValue: std_msgs/String
+  google.protobuf.BytesValue: proto2ros/Bytes
+  google.protobuf.ListValue: proto2ros/List
+  google.protobuf.Value: proto2ros/Value
+  google.protobuf.Struct: proto2ros/Struct
+python_imports:
+  - std_msgs.msg
+  - proto2ros.msg
+  - builtin_interfaces.msg
+  - google.protobuf.any_pb2
+  - google.protobuf.duration_pb2
+  - google.protobuf.struct_pb2
+  - google.protobuf.timestamp_pb2
+  - google.protobuf.wrappers_pb2
+inline_python_imports:
+  - proto2ros.conversions.basic

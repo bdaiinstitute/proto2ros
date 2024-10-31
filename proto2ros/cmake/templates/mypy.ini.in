@@ -1,0 +1,10 @@
+# Generated from cmake/templates/mypy.ini.in in the proto2ros package.
+[mypy]
+ignore_missing_imports = true
+mypy_path = "@MYPY_PATH@"
+# Ignore missing type annotations, mainly coming from ROS 2 imports.
+disable_error_code = var-annotated
+
+[mypy-google.*]
+# Ignore google.* modules explicitly to avoid missing type hints errors.
+ignore_missing_imports = true

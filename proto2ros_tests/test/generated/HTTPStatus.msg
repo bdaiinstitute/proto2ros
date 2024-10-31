@@ -1,0 +1,8 @@
+# HTTP status codes.
+
+int32 UNDEFINED=0
+int32 OK=200
+int32 NOT_FOUND=404
+int32 INTERNAL_SERVER_ERROR=500
+
+int32 value

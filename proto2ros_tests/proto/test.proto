@@ -1,0 +1,274 @@
+// Copyright (c) 2023 Boston Dynamics AI Institute LLC. All rights reserved.
+
+syntax = "proto3";
+
+package proto2ros_tests;
+
+option java_outer_classname = "Proto2ROSTests";
+
+import "google/protobuf/any.proto";
+import "google/protobuf/type.proto";
+
+import "bosdyn/api/geometry.proto";
+
+// Body relative directions for motion.
+enum Direction {
+    LEFT = 0;
+    RIGHT = 1;
+    FORWARD = 2;
+    BACKWARD = 3;
+}
+
+// Temperature measurement.
+message Temperature {
+    // Measurement temperature scale.
+    enum Scale {
+        CELSIUS = 0;
+        KELVIN = 1;
+        FAHRENHEIT = 2;
+    }
+    float value = 1;
+    Scale scale = 2;
+}
+
+// A control request for an HVAC system.
+message HVACControlRequest {
+    double air_flow_rate = 1;
+    Temperature temperature_setpoint = 2;
+}
+
+// Binary recursive fragment.
+message Fragment {
+    // fragment payload.
+    bytes payload = 1;
+    // nested fragments.
+    repeated Fragment nested = 2;
+}
+
+// Heterogeneous pair.
+message Pair {
+    // First value.
+    Value first = 1;
+    // Second value.
+    Value second = 2;
+}
+
+// Heterogeneous list.
+message List {
+    // Listed values.
+    repeated Value values = 1;
+}
+
+// Heterogeneous dict.
+message Dict {
+    map<string, Value> items = 1;
+}
+
+// Heterogeneous value.
+message Value {
+    oneof data {
+        // Numeric value.
+        float number = 1;
+        // Text value.
+        string text = 2;
+        // Pair value.
+        Pair pair = 3;
+        // List value.
+        List list = 4;
+        // Dict value.
+        Dict dict = 5;
+    }
+}
+
+// Discrete motion request.
+message MotionRequest  {
+    // Valid directions for motion.
+    enum Direction {
+        Left = 0;
+        Right = 1;
+        Forward = 2;
+        Backward = 3;
+    }
+    // Direction of motion.
+    Direction direction = 1;
+    // motion speed.
+    float speed = 2;
+}
+
+// Empty HTTP message.
+/*
+ * For namespacing purposes only.
+ */
+message HTTP {
+    // Supported HTTP methods.
+    enum Method {
+        GET = 0;
+        HEAD = 1;
+        POST = 2;
+        PUT = 3;
+    }
+    // HTTP request message.
+    message Request {
+        // HTTP request method.
+        Method method = 1;
+        // HTTP resource URI.
+        string uri = 2;
+        // HTTP request body.
+        bytes body = 3;
+    }
+    // HTTP status codes.
+    enum Status {
+        UNDEFINED = 0;
+        OK = 200;
+        NOT_FOUND = 404;
+        INTERNAL_SERVER_ERROR = 500;
+    }
+    // HTTP response message.
+    message Response {
+        // HTTP response status.
+        Status status = 1;
+        // HTTP response reason.
+        string reason = 2;
+        // HTTP response body.
+        bytes body = 3;
+    }
+}
+
+// Any single robot command.
+message AnyCommand {
+    // Walk command.
+    message Walk {
+        // Walking distance.
+        float distance = 1;
+        // walking speed.
+        float speed = 2;
+    }
+    // Jump command.
+    message Jump {
+        // Jump height.
+        float height = 1;
+    }
+    // Sit command.
+    message Sit {}
+
+    oneof commands {
+        Walk walk = 1;
+        Jump jump = 2;
+        Sit sit = 3;
+    }
+}
+
+// Generic diagnostic message.
+message Diagnostic {
+    enum Severity {
+        // Informational diagnostic severity.
+        INFO = 0;
+        WARN = 1;
+        FATAL = 2;
+    }
+    // Diagnostic severity.
+    Severity severity = 1;
+    // Diagnostic reason.
+    string reason = 2;
+    // Diagnostic attributes.
+    map<string, string> attributes = 3;
+}
+
+// Remote RPA request.
+message RemoteExecutionRequest {
+    // Execution prompt.
+    string prompt = 1;
+    // Timeout for request, in nanoseconds
+    int64 timeout = 2 [deprecated = true];
+    // Timeout for request, in seconds.
+    float timeout_sec = 3;
+}
+
+// Generic error message.
+message Error {
+    // Integer error code.
+    int32 code = 1;
+    // error reason.
+    string reason = 2;
+}
+
+// Remote RPA result.
+message RemoteExecutionResult {
+    // Remote execution error.
+    message Error {
+        int32 code = 1;
+        // May contain backslashes (\).
+        string reason = 2;
+        repeated string traceback = 3;
+    }
+    bool ok = 1;
+    Error error = 2;
+}
+
+
+// 3D displacement
+message Displacement {
+    bosdyn.api.Vec3 translation = 1;
+    // Rotation field (TBD)
+    reserved "rotation";
+}
+
+// Camera sensor information.
+message CameraInfo {
+    message DistortionModel {
+        enum Type {
+            // Uses 5 coefficients.
+            PLUMB_BOB = 0;
+            // Uses 4 coefficients.
+            EQUIDISTANT = 1;
+        }
+        Type type = 1;
+        repeated double coefficients = 2;
+    }
+
+    uint32 height = 1;
+    uint32 width = 2;
+
+    // Intrinsic matrix.
+    Matrix K = 3;
+    // Rectification matrix.
+    Matrix R = 4;
+    // Projection matrix.
+    Matrix P = 5;
+
+    DistortionModel distortion_model = 6;
+}
+
+message Matrix {
+    uint32 rows = 1;
+    uint32 cols = 2;
+    // Row-major matrix data.
+    repeated double data = 3;
+}
+
+// Generic map message.
+message Map {
+    message Fragment {
+        int32 width = 1;
+        int32 height = 2;
+        // Fragment grid as a column-major matrix.
+        bytes grid = 3;
+    }
+    map<int32, Fragment> submaps = 1;
+}
+
+// Protobuf type query request message.
+message RTTIQueryRequest {
+    google.protobuf.Any msg = 1;
+}
+
+// Protobuf type query result message.
+message RTTIQueryResult {
+    google.protobuf.Type type = 1;
+}
+
+// Generalized goal.
+message Goal {
+    google.protobuf.Any target = 1;
+    google.protobuf.Any roi = 2;
+}

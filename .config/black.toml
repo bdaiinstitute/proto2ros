@@ -1,0 +1,13 @@
+[tool.black]
+line-length = 120
+target-version = ['py38']
+include = '\.pyi?$'
+# `extend-exclude` is not honored when `black` is passed a file path explicitly,
+# as is typical when `black` is invoked via `pre-commit`.
+force-exclude = '''
+/(
+  docker/ros/.*
+)/
+'''
+
+preview = true

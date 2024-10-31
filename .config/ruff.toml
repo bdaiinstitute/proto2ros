@@ -1,0 +1,54 @@
+# See https://docs.astral.sh/ruff/rules/ for ruff rules
+select = ["A", "B", "COM", "D101", "D102", "D103", "D2", "D3", "D402", "D417", "D419", "E", "ERA", "F", "I", "NPY", "RET", "RUF100", "SIM"]
+ignore = ["D203", "D213"]
+
+# Allow autofix for all enabled rules (when `--fix`) is provided.
+fixable = ["A", "B", "C", "D", "E", "F", "G", "I", "N", "Q", "S", "T", "W", "ANN", "ARG", "BLE", "COM", "DJ", "DTZ", "EM", "ERA", "EXE", "FBT", "ICN", "INP", "ISC", "NPY", "PD", "PGH", "PIE", "PL", "PT", "PTH", "PYI", "RET", "RSE", "RUF", "SIM", "SLF", "TCH", "TID", "TRY", "UP", "YTT"]
+unfixable = []
+
+# Exclude a variety of commonly ignored directories.
+exclude = [
+    ".bzr",
+    ".direnv",
+    ".eggs",
+    ".git",
+    ".hg",
+    ".hg",
+    ".mypy_cache",
+    ".nox",
+    ".pants.d",
+    ".pytype",
+    ".ruff_cache",
+    ".svn",
+    ".tox",
+    ".venv",
+    "__pypackages__",
+    "_build",
+    "buck-out",
+    "build",
+    "dist",
+    "node_modules",
+    "venv",
+    "docker/ros",
+]
+
+# Same as Black.
+line-length = 120
+
+# Allow unused variables when underscore-prefixed.
+dummy-variable-rgx = "^(_+|(_+[a-zA-Z0-9_]*[a-zA-Z0-9]+?))$"
+
+# Assume Python 3.8.
+target-version = "py38"
+
+[per-file-ignores]
+"__init__.py" = ["F401"]
+
+# We don't require docstrings in tests
+"**/conftest.py" = ["D"]
+"**/test_*.py" = ["D"]
+"proto2ros_tests/*" = ["D"]
+
+[mccabe]
+# Unlike Flake8, default to a complexity level of 10.
+max-complexity = 10

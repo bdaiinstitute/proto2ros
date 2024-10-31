@@ -1,0 +1,27 @@
+any_expansions:
+  proto2ros_tests.Goal.target: bosdyn.api.SE2Pose
+  proto2ros_tests.Goal.roi: [bosdyn.api.Polygon, bosdyn.api.Circle]
+message_mapping:
+  bosdyn.api.Vec3: geometry_msgs/Vector3
+  bosdyn.api.Quaternion: geometry_msgs/Quaternion
+  bosdyn.api.SE2Pose: geometry_msgs/Pose
+  bosdyn.api.Polygon: geometry_msgs/Polygon
+  bosdyn.api.Circle: geometry_msgs/Vector3
+  bosdyn.api.SE3Pose: geometry_msgs/Pose
+  bosdyn.api.SE3Velocity: geometry_msgs/Twist
+  bosdyn.api.Wrench: geometry_msgs/Wrench
+  proto2ros_tests.Temperature: sensor_msgs/Temperature
+python_imports:
+  - bosdyn.api.geometry_pb2
+  - geometry_msgs.msg
+cpp_headers:
+  - bosdyn/api/geometry.pb.h
+  - geometry_msgs/msg/polygon.hpp
+  - geometry_msgs/msg/pose.hpp
+  - geometry_msgs/msg/quaternion.hpp
+  - geometry_msgs/msg/twist.hpp
+  - geometry_msgs/msg/vector3.hpp
+  - geometry_msgs/msg/wrench.hpp
+  - proto2ros_tests/manual_conversions.hpp
+inline_python_imports:
+  - proto2ros_tests.manual_conversions

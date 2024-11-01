@@ -1,19 +1,13 @@
 ARG ROS_DISTRO=humble
 FROM ros:${ROS_DISTRO}-ros-base
 
-ENV ROS_DISTRO $ROS_DISTRO
+ENV ROS_DISTRO=${ROS_DISTRO}
 
 SHELL ["/bin/bash", "-c"]
 
 # setup environment
-ENV LANG C.UTF-8
-ENV LC_ALL C.UTF-8
-
-# install packages
-RUN apt-get update \
-    && apt-get install -q -y --no-install-recommends \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
+ENV LANG=C.UTF-8
+ENV LC_ALL=C.UTF-8
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN DEBIAN_FRONTEND=noninteractive apt-get update -q && \
@@ -25,8 +19,7 @@ RUN DEBIAN_FRONTEND=noninteractive apt-get update -q && \
     python3-colcon-common-extensions \
     python3-colcon-mixin \
     python3-pytest-cov \
-    python3-rosdep \
-    libpython3-dev \
+    python3-rosdep && \
     rm -rf /var/lib/apt/lists/*
 
 # Install dependencies for repository packages

@@ -164,7 +164,8 @@ def translate_type_name(name: str, config: Configuration) -> str:
     if matching_proto_packages:
         proto_package = max(matching_proto_packages, key=len)
         ros_package = config.package_mapping[proto_package]
-        proto_type_name = proto_type_name.removeprefix(proto_package + ".")
+        if proto_type_name.startswith(proto_package + "."):
+            proto_type_name = proto_type_name[len(proto_package) + 1 :]
         ros_type_name = inflection.camelize(proto_type_name.replace(".", "_"))
         return f"{ros_package}/{ros_type_name}"
 
@@ -372,7 +373,6 @@ def compute_equivalence_for_message(
         for (oneof_path, oneof_decl), oneof_fields in zip(
             locate_repeated("oneof_decl", descriptor),
             oneof_field_sets,
-            strict=True,
         ):
             oneof_name = inflection.underscore(oneof_decl.name)
             oneof_type_name = inflection.camelize(f"{name}_one_of_{oneof_name}")
@@ -398,7 +398,7 @@ def compute_equivalence_for_message(
             )
             oneof_message_spec.annotations["proto-type"] = protofqn(source, location) + f"[one-of {oneof_decl.name}]"
             oneof_message_spec.annotations["proto-class"] = "one-of"
-            oneof_message_spec.annotations["tagged"] = list(zip(oneof_constants[1:], oneof_fields[:-2], strict=True))
+            oneof_message_spec.annotations["tagged"] = list(zip(oneof_constants[1:], oneof_fields[:-2]))
             oneof_message_spec.annotations["tag"] = which_field
             auxiliary_message_specs.append(oneof_message_spec)
 

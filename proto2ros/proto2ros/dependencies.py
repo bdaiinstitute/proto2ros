@@ -54,7 +54,7 @@ def fix_dependency_cycles(message_specs: List[MessageSpecification], quiet: bool
             key=dependency_graph.in_degree,  # implicitly breaks ties by prioritizing the least common messages
         ),
     )
-    while counter.total() > 0:
+    while sum(counter.values()) > 0:
         for node, _ in counter.most_common():  # greedily break cycles
             message = dependency_graph.nodes[node]["message"]
             if message.annotations["proto-class"] != "message":

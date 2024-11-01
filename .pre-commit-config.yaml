@@ -5,13 +5,13 @@ repos:
   rev: 'v0.0.263'
   hooks:
     - id: ruff
-      args: ['--fix', '--config', 'configs/ruff.toml']
+      args: ['--fix', '--config', '.config/ruff.toml']
 - repo: https://github.com/psf/black
   rev: 23.3.0
   hooks:
     - id: black
       language_version: python3.10
-      args: ['--config', 'configs/black.toml']
+      args: ['--config', '.config/black.toml']
       verbose: true
 - repo: https://github.com/pre-commit/pre-commit-hooks
   rev: v4.4.0
@@ -42,7 +42,7 @@ repos:
   rev: v1.2.0
   hooks:
   -   id: mypy
-      args: ['--config-file', 'configs/mypy.ini']
+      args: ['--config-file', '.config/mypy.ini']
       pass_filenames: false
       additional_dependencies:
       - types-protobuf

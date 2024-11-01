@@ -124,4 +124,3 @@ Feature requests are tracked as [GitHub issues](https://github.com/bdaiinstitute
 <!-- omit in toc -->
 ## Attribution
 This guide is based on the **contributing-gen**. [Make your own](https://github.com/bttger/contributing-gen)!
-

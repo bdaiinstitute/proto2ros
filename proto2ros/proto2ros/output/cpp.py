@@ -29,7 +29,7 @@ def itemize_cpp_identifier(identifier: str, prefix: Optional[str] = None) -> str
         basename = prefix + basename
     if not basename.endswith("item"):
         return f"{basename}_item"
-    return basename.removesuffix("item") + "subitem"
+    return basename[: -len("item")] + "subitem"
 
 
 def to_ros_cpp_header(spec: MessageSpecification) -> str:

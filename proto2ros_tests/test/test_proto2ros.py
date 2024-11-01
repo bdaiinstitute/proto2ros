@@ -10,8 +10,8 @@ import geometry_msgs.msg
 import google.protobuf.type_pb2
 import test_pb2
 
-import proto2ros.msg
 import proto2ros_tests.msg
+from proto2ros.msg import Any, AnyProto  # type: ignore
 from proto2ros_tests.conversions import convert
 
 
@@ -311,7 +311,7 @@ def test_messages_with_any_fields() -> None:
 
     ros_request = proto2ros_tests.msg.RTTIQueryRequest()
     convert(proto_request, ros_request)
-    assert isinstance(ros_request.msg, proto2ros.msg.AnyProto)
+    assert isinstance(ros_request.msg, AnyProto)
 
     unpacked_proto_matrix = test_pb2.Matrix()
     convert(ros_request.msg, unpacked_proto_matrix)
@@ -335,7 +335,7 @@ def test_messages_with_unknown_type_fields() -> None:
 
     ros_result = proto2ros_tests.msg.RTTIQueryResult()
     convert(proto_result, ros_result)
-    assert isinstance(ros_result.type, proto2ros.msg.AnyProto)
+    assert isinstance(ros_result.type, AnyProto)
 
     unpacked_proto_type = google.protobuf.type_pb2.Type()
     convert(ros_result.type, unpacked_proto_type)
@@ -366,7 +366,7 @@ def test_messages_with_expanded_any_fields() -> None:
     ros_goal = proto2ros_tests.msg.Goal()
     convert(proto_goal, ros_goal)
     assert isinstance(ros_goal.target, geometry_msgs.msg.Pose)
-    assert isinstance(ros_goal.roi, proto2ros.msg.Any)
+    assert isinstance(ros_goal.roi, Any)
     assert ros_goal.target.position.x == proto_target.position.x
     assert ros_goal.target.position.y == proto_target.position.y
     assert ros_goal.roi.type_name == "geometry_msgs/Polygon"
@@ -382,5 +382,5 @@ def test_messages_with_expanded_any_fields() -> None:
     other_proto_roi = bosdyn.api.geometry_pb2.Polygon()
     other_proto_goal.roi.Unpack(other_proto_roi)
     assert len(other_proto_roi.vertexes) == 4
-    for a, b in zip(proto_roi.vertexes, other_proto_roi.vertexes, strict=True):
+    for a, b in zip(proto_roi.vertexes, other_proto_roi.vertexes):
         assert a.x == b.x and a.y == b.y

@@ -344,6 +344,7 @@ Convert({{ source }}, &{{ destination }});
 
 namespace {{ package_name }}::conversions {
 
+using proto2ros::conversions::Convert;
 {%- for namespace in config.cpp_conversion_namespaces %}
 using {{ namespace }}::Convert;
 {%- endfor %}

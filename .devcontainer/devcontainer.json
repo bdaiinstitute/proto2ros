@@ -1,0 +1,7 @@
+{
+  "name": "proto2ros dev container",
+  "build": {
+    "dockerfile": "Dockerfile",
+    "context": ".."
+  }
+}

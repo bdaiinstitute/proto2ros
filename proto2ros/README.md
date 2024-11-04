@@ -119,6 +119,7 @@ As ROS 2 messages lack the notion of enumerated types entirely, a ROS 2 message 
 Protobuf enumeration. This ROS 2 message defines a homonymous integer constant for each enum value and
 a single `value` integer field to bear it. A sample equivalence is shown below.
 
+<div style="overflow-x: auto">
 <table>
 <tr>
 <td>Protobuf .proto definition</td>
@@ -128,7 +129,7 @@ a single `value` integer field to bear it. A sample equivalence is shown below.
 <td>
 
 ```proto
-# some.proto
+// some.proto
 
 enum Status {
   STATUS_UNKNOWN = 0;
@@ -153,6 +154,7 @@ int32 value
 </td>
 </tr>
 </table>
+</div>
 
 ##### Map types
 
@@ -160,6 +162,7 @@ Over the wire, Protobuf map types are [bound](https://protobuf.dev/programming-g
 equivalent to a sequence of key-value pairs (or _map entry_ messages). For ROS 2, the exact same convention is
 observed. A ROS 2 message is thus generated for each _map entry_ message. A sample equivalence is shown below.
 
+<div style="overflow-x: auto">
 <table>
 <tr>
 <td>Protobuf .proto definition</td>
@@ -170,7 +173,7 @@ observed. A ROS 2 message is thus generated for each _map entry_ message. A samp
 <td rowspan="3">
 
 ```proto
-# some.proto
+// some.proto
 
 message Device {
   map<string, string> attributes = 1;
@@ -181,7 +184,7 @@ message Device {
 <td rowspan="3">
 
 ```proto
-# some.proto
+// some.proto
 
 message Device {
   message AttributesEntry {
@@ -218,6 +221,7 @@ string value
 </td>
 </tr>
 </table>
+</div>
 
 ##### Any types
 
@@ -267,6 +271,7 @@ of optional fields entirely, an unsigned integer `has_field` field explicitly co
 information. For each optional field `f`, an unsigned integer constant `F_FIELD_SET` bit mask is defined. Bitwise binary
 operations can then be used to explicitly indicate and check for field presence. A sample equivalence is shown below.
 
+<div style="overflow-x: auto">
 <table>
 <tr>
 <td>Protobuf .proto definition</td>
@@ -276,7 +281,7 @@ operations can then be used to explicitly indicate and check for field presence.
 <td>
 
 ```proto
-# some.proto
+// some.proto
 
 message Option {
   optional string value = 1;
@@ -287,7 +292,7 @@ message Option {
 <td>
 
 ```python
-# Option.msg
+// Option.msg
 
 uint8 VALUE_FIELD_SET=1
 
@@ -299,6 +304,7 @@ uint8 has_field 255
 </td>
 </tr>
 </table>
+</div>
 
 Note that, to match ROS 2 message semantics, the bit mask is fully set by default. That is, all fields are assumed to be present by default.
 
@@ -312,6 +318,7 @@ fields. This exception is necessary as scalar `bytes` fields are already mapped 
 mapping rules are overridden and repeated `bytes` fields are mapped to array fields of `proto2ros/Bytes` ROS 2 message type. A sample
 equivalence is shown below.
 
+<div style="overflow-x: auto">
 <table>
 <tr>
 <td>Protobuf .proto definition</td>
@@ -321,7 +328,7 @@ equivalence is shown below.
 <td>
 
 ```proto
-# some.proto
+// some.proto
 
 message Payload {
   repeated int32 keys = 1;
@@ -344,6 +351,7 @@ uint8[] checksum
 </td>
 </tr>
 </table>
+</div>
 
 ##### One-of fields
 
@@ -353,6 +361,7 @@ For each field `f` in the one-of construct `o`, an integer constant `O_F_SET` ta
 conveys presence of the corresponding field. In place for each one-of construct, a message field of the corresponding type is defined. A sample
 equivalence is shown below.
 
+<div style="overflow-x: auto">
 <table>
 <tr>
 <td>Protobuf .proto definition</td>
@@ -362,7 +371,7 @@ equivalence is shown below.
 <td rowspan="7">
 
 ```proto
-# some.proto
+// some.proto
 
 message Timestamp {
   oneof value {
@@ -433,6 +442,7 @@ int8 which
 </td>
 </tr>
 </table>
+</div>
 
 **Implementation note**: 8 bit tags are used for one-of constructs. Protobuf messages with more than 256 one-of fields are therefore not supported.
 
@@ -441,6 +451,7 @@ int8 which
 Deprecated fields are kept, unless `drop_deprecated` is enabled. If kept, these fields are annotated with a comment
 in the corresponding ROS 2 message definition. A sample equivalence is shown below.
 
+<div style="overflow-x: auto">
 <table>
 <tr>
 <td>Protobuf .proto definition</td>
@@ -451,7 +462,7 @@ in the corresponding ROS 2 message definition. A sample equivalence is shown bel
 <td>
 
 ```proto
-# some.proto
+// some.proto
 
 message Duration {
   int64 seconds = 1;
@@ -484,11 +495,13 @@ int64 nanoseconds
 </td>
 </tr>
 </table>
+</div>
 
 ##### Reserved fields
 
 Reserved fields are ignored.
 
+<div style="overflow-x: auto">
 <table>
 <tr>
 <td>Protobuf .proto definition</td>
@@ -498,7 +511,7 @@ Reserved fields are ignored.
 <td>
 
 ```proto
-# some.proto
+// some.proto
 
 message Goal {
   string location = 1;
@@ -518,6 +531,7 @@ string location
 </td>
 </tr>
 </table>
+</div>
 
 ### Code generation
 

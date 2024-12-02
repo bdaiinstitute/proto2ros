@@ -7,7 +7,7 @@ Copyright (c) 2023 Boston Dynamics AI Institute LLC. All rights reserved.
   <name>proto2ros_tests</name>
   <version>0.1.0</version>
   <description>Protobuf to ROS 2 interoperability interfaces tests</description>
-  <maintainer email="engineering@theaiinstitute.com">BD AI Institute</maintainer>
+  <maintainer email="opensource@theaiinstitute.com">Boston Dynamics AI Institute</maintainer>
   <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>

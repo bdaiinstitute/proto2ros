@@ -5,7 +5,7 @@ Copyright (c) 2023 Boston Dynamics AI Institute LLC. All rights reserved.
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>proto2ros</name>
-  <version>0.1.0</version>
+  <version>1.0.0</version>
   <description>Protobuf to ROS 2 interoperability interfaces</description>
   <maintainer email="opensource@theaiinstitute.com">Boston Dynamics AI Institute</maintainer>
   <license>MIT</license>

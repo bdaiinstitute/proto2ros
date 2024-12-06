@@ -1,5 +1,6 @@
 # Generated from cmake/templates/mypy.ini.in in the proto2ros package.
 [mypy]
+follow_imports = silent
 ignore_missing_imports = true
 mypy_path = "@MYPY_PATH@"
 # Ignore missing type annotations, mainly coming from ROS 2 imports.

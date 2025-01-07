@@ -21,7 +21,7 @@ concurrency:
 jobs:
   lint:
     name: Lint proto2ros packages
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
@@ -30,7 +30,7 @@ jobs:
         uses: pre-commit/action@v3.0.0
   prepare_container:
     name: Prepare Humble container for tests
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: lint
     permissions:
       contents: read
@@ -72,7 +72,7 @@ jobs:
           cache-to: type=gha,mode=max
   build_and_test:
     name: Build and test proto2ros packages
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: prepare_container
     container:
       image: ${{ needs.prepare_container.outputs.image }}

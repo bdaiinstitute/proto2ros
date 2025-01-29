@@ -68,7 +68,7 @@ We use GitHub issues to track bugs and errors. If you run into an issue with the
 Once it's filed:
 
 - The project team will label the issue accordingly.
-- A team member will try to reproduce the issue with your provided steps. 
+- A team member will try to reproduce the issue with your provided steps.
 - If the team is able to reproduce the issue, it will be confirmed as a `bug` and the issue will be left to be [addressed by someone](#your-first-code-contribution).
 
 ### Requesting Features
@@ -95,7 +95,7 @@ Feature requests are tracked as [GitHub issues](https://github.com/bdaiinstitute
 
 ### Your First Code Contribution
 
-- Install a suitable [ROS distribution](https://docs.ros.org/en/humble/Installation.html). 
+- Install a suitable [ROS distribution](https://docs.ros.org/en/humble/Installation.html).
 
 - Fork this repository on GitHub.
 
@@ -107,7 +107,7 @@ Feature requests are tracked as [GitHub issues](https://github.com/bdaiinstitute
   git clone https://github.com/user-name/proto2ros.git
   cd -
   ```
-  
+
 - Install `pre-commit` hooks for it:
 
   ```sh

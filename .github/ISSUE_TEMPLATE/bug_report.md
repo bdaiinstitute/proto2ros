@@ -8,13 +8,13 @@ labels: bug
 ## Bug description
 
 **Platform**:
-- OS [e.g. Ubuntu Jammy]: 
-- ROS [e.g. Humble]: 
+- OS [e.g. Ubuntu Jammy]:
+- ROS [e.g. Humble]:
 - `proto2ros` version [e.g. ag, commit sha]:
 
 ### How to reproduce
 
-<!-- 
+<!--
   A step-by-step procedure to reproduce this bug
   i.e. the associated minimum reproducible example
   (https://stackoverflow.com/help/minimal-reproducible-example).

@@ -24,10 +24,11 @@ repos:
   -   id: check-added-large-files
       args: ['--enforce-all', '--maxkb', '200']
   -   id: check-toml
-  -   id: end-of-file-fixer
   -   id: check-merge-conflict
   -   id: check-executables-have-shebangs
   -   id: check-shebang-scripts-are-executable
+  -   id: end-of-file-fixer
+  -   id: trailing-whitespace
 - repo: https://github.com/ssciwr/clang-format-hook.git
   rev: v14.0.0
   hooks:

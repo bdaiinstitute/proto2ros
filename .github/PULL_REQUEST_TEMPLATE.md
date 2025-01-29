@@ -1,7 +1,7 @@
 ## Proposed changes
 
-<!-- 
-    A brief description of the changes you are making. 
+<!--
+    A brief description of the changes you are making.
     Make sure to refer to the issue that explains and
     motivates this patch.
 -->

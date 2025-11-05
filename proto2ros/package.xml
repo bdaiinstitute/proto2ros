@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <!--
-Copyright (c) 2023 Boston Dynamics AI Institute LLC. All rights reserved.
+Copyright (c) 2023 Robotics and AI Institute LLC dba RAI Institute. All rights reserved.
 -->
 <?xml-model href="http://download.ros.org/schema/package_format3.xsd" schematypens="http://www.w3.org/2001/XMLSchema"?>
 <package format="3">
   <name>proto2ros</name>
   <version>1.0.0</version>
   <description>Protobuf to ROS 2 interoperability interfaces</description>
-  <maintainer email="opensource@theaiinstitute.com">Boston Dynamics AI Institute</maintainer>
+  <maintainer email="opensource@theaiinstitute.com">Robotics and AI Institute LLC dba RAI Institute</maintainer>
   <license>MIT</license>
 
   <buildtool_depend>ament_cmake</buildtool_depend>

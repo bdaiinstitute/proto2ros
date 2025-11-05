@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Boston Dynamics AI Institute LLC. All rights reserved.
+# Copyright (c) 2023 Robotics and AI Institute LLC dba RAI Institute. All rights reserved.
 include("${proto2ros_DIR}/rosidl_helpers.cmake")
 if(POLICY CMP0148)
   cmake_policy(SET CMP0148 OLD)  # to accommodate rosidl pipeline

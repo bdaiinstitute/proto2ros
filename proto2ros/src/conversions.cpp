@@ -3,6 +3,7 @@
 
 #include "proto2ros/conversions.hpp"
 
+#include <algorithm>
 #include <sstream>
 
 #include <rclcpp/serialization.hpp>

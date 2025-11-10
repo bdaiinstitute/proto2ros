@@ -4,6 +4,7 @@
 #include "proto2ros_tests/manual_conversions.hpp"
 
 #include <cmath>
+#include <limits>
 
 namespace proto2ros_tests::conversions {
 

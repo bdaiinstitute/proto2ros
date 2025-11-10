@@ -4,7 +4,6 @@ import bosdyn.api.geometry_pb2
 import geometry_msgs.msg
 import sensor_msgs.msg
 import test_pb2
-
 from proto2ros.conversions import convert
 
 

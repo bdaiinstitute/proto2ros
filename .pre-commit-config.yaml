@@ -46,13 +46,16 @@ repos:
       args: ['--config-file', '.config/mypy.ini']
       pass_filenames: false
       additional_dependencies:
+      - protobuf
+      - typed-ast
       - types-protobuf
+      - types-pytz
+      - types-PyYAML
       - types-requests
       - types-simplejson
-      - types-ujson
-      - types-PyYAML
-      - types-toml
       - types-six
+      - types-toml
+      - types-ujson
       - typing-extensions
 
 - repo: https://github.com/jumanjihouse/pre-commit-hooks

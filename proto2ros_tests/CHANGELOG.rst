@@ -2,8 +2,8 @@
 Changelog for package proto2ros_tests
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.1 (2025-11-12)
+------------------
 * Change to new RAI Institute copyright (`#12 <https://github.com/bdaiinstitute/proto2ros/issues/12>`_)
 * Contributors: Ben Axelrod
 

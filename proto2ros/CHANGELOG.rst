@@ -2,8 +2,8 @@
 Changelog for package proto2ros
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-Forthcoming
------------
+1.0.1 (2025-11-12)
+------------------
 * Add Jazzy support (`#13 <https://github.com/bdaiinstitute/proto2ros/issues/13>`_)
 * Change to new RAI Institute copyright (`#12 <https://github.com/bdaiinstitute/proto2ros/issues/12>`_)
 * Fix proto2ros C++ conversions template (`#11 <https://github.com/bdaiinstitute/proto2ros/issues/11>`_)

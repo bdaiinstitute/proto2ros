@@ -8,6 +8,7 @@ SHELL ["/bin/bash", "-c"]
 # setup environment
 ENV LANG=C.UTF-8
 ENV LC_ALL=C.UTF-8
+ENV PIP_BREAK_SYSTEM_PACKAGES=1
 
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 RUN DEBIAN_FRONTEND=noninteractive apt-get update -q && \

@@ -1,7 +1,7 @@
 # Protobuf / ROS 2 interoperability
 
-![Python Support](https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10-blue)
-![ROS Support](https://img.shields.io/badge/ROS-humble-blue)
+![Python Support](https://img.shields.io/badge/python-3.8%20%7C%203.9%20%7C%203.10%20%7C%203.11%20%7C%203.12-blue)
+![ROS Support](https://img.shields.io/badge/ROS-humble%20%7C%20jazzy-blue)
 
 ## Overview
 

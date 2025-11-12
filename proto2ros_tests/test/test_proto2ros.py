@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Boston Dynamics AI Institute LLC. All rights reserved.
+# Copyright (c) 2023 Robotics and AI Institute LLC dba RAI Institute. All rights reserved.
 
 import filecmp
 import math
@@ -8,11 +8,11 @@ import pathlib
 import bosdyn.api.geometry_pb2
 import geometry_msgs.msg
 import google.protobuf.type_pb2
-import test_pb2
-
 import proto2ros_tests.msg
-from proto2ros.msg import Any, AnyProto  # type: ignore
+import test_pb2
 from proto2ros_tests.conversions import convert
+
+from proto2ros.msg import Any, AnyProto  # type: ignore
 
 
 def test_message_generation() -> None:

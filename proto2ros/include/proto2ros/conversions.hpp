@@ -1,4 +1,5 @@
-// Copyright (c) 2024 Boston Dynamics AI Institute LLC. All rights reserved.
+// Copyright (c) 2024 Robotics and AI Institute LLC dba RAI Institute. All
+// rights reserved.
 
 /// This module provides basic conversion APIs, applicable to any proto2ros
 /// generated packages.

@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Boston Dynamics AI Institute LLC. All rights reserved.
+# Copyright (c) 2023 Robotics and AI Institute LLC dba RAI Institute. All rights reserved.
 
 """This module provides basic conversion APIs, applicable to any proto2ros generated packages."""
 
@@ -353,12 +353,12 @@ def convert_proto2ros_value_message_to_google_protobuf_value_proto(
     elif ros_msg.kind == Value.BOOL_VALUE_SET:
         proto_msg.bool_value = ros_msg.bool_value
     elif ros_msg.kind == Value.STRUCT_VALUE_SET:
-        if proto_msg.struct_value.type_name != "proto2ros/Struct":
+        if ros_msg.struct_value.type_name != "proto2ros/Struct":
             raise ValueError(
-                f"expected proto2ros/Struct message for struct_value member, got {proto_msg.struct_value.type}",
+                f"expected proto2ros/Struct message for struct_value member, got {ros_msg.struct_value.type_name}",
             )
         typed_field_message = rclpy.serialization.deserialize_message(
-            proto_msg.struct_value.value.tobytes(),
+            ros_msg.struct_value.value.tobytes(),
             Struct,
         )
         convert_proto2ros_struct_message_to_google_protobuf_struct_proto(
@@ -366,12 +366,12 @@ def convert_proto2ros_value_message_to_google_protobuf_value_proto(
             proto_msg.struct_value,
         )
     elif ros_msg.kind == Value.LIST_VALUE_SET:
-        if proto_msg.list_value.type_name != "proto2ros/List":
+        if ros_msg.list_value.type_name != "proto2ros/List":
             raise ValueError(
-                f"expected proto2ros/Struct message for list_value member, got {proto_msg.list_value.type}",
+                f"expected proto2ros/List message for list_value member, got {ros_msg.list_value.type_name}",
             )
         typed_field_message = rclpy.serialization.deserialize_message(
-            proto_msg.list_value.value.tobytes(),
+            ros_msg.list_value.value.tobytes(),
             List,
         )
         convert_proto2ros_list_message_to_google_protobuf_list_value_proto(
@@ -393,7 +393,7 @@ def convert_google_protobuf_value_proto_to_proto2ros_value_message(
     ros_msg: Value,
 ) -> None:
     """Converts from google.protobuf.Value Protobuf messages to proto2ros/Value ROS messages."""
-    which = proto_msg.WhichOneOf("kind")
+    which = proto_msg.WhichOneof("kind")
     if which == "null_value":
         ros_msg.kind = Value.NO_VALUE_SET
     elif which == "number_value":
@@ -421,7 +421,8 @@ def convert_google_protobuf_value_proto_to_proto2ros_value_message(
         ros_msg.list_value.type_name = "proto2ros/List"
         ros_msg.kind = Value.LIST_VALUE_SET
     else:
-        raise ValueError("unexpected one-of field: " + proto_msg.WhichOneOf("kind"))
+        which_oneof = proto_msg.WhichOneof("kind")
+        raise ValueError(f"unexpected one-of field: {which_oneof}")
 
 
 convert_proto_to_proto2ros_value = convert_google_protobuf_value_proto_to_proto2ros_value_message

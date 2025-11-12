@@ -1,4 +1,4 @@
-# Copyright (c) 2023 Boston Dynamics AI Institute LLC. All rights reserved.
+# Copyright (c) 2023 Robotics and AI Institute LLC dba RAI Institute. All rights reserved.
 cmake_minimum_required(VERSION 3.12)
 if(POLICY CMP0148)
   cmake_policy(SET CMP0148 OLD)  # to accommodate rosidl pipeline

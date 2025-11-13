@@ -361,8 +361,9 @@ def compute_equivalence_for_message(
             field_location = resolve(source, field_path, location)
             field = translate_field(field_descriptor, source, field_location, config)
             if field_descriptor.HasField("oneof_index"):
-                oneof_field_sets[field_descriptor.oneof_index].append(field)
-                continue
+                if not descriptor.oneof_decl[field_descriptor.oneof_index].name.startswith("_"):
+                    oneof_field_sets[field_descriptor.oneof_index].append(field)
+                    continue
 
             if field.annotations["optional"]:
                 mask_name = field.name.upper() + "_FIELD_SET"
@@ -374,6 +375,10 @@ def compute_equivalence_for_message(
             locate_repeated("oneof_decl", descriptor),
             oneof_field_sets,
         ):
+
+            if not oneof_fields:
+                continue
+
             oneof_name = inflection.underscore(oneof_decl.name)
             oneof_type_name = inflection.camelize(f"{name}_one_of_{oneof_name}")
             oneof_type = Type(f"{ros_package_name}/{oneof_type_name}")

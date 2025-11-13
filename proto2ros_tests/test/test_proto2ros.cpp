@@ -442,10 +442,10 @@ TEST(Proto2RosTesting, MessagesWithSubMessageMapField) {
 
 TEST(Proto2RosTesting, MessagesWithOptionalFields) {
   auto proto_request = proto2ros_tests::HVACControlRequest();
-  
+
   auto ros_request_none_set = proto2ros_tests::msg::HVACControlRequest();
   Convert(proto_request, &ros_request_none_set);
-  
+
   proto_request.set_humidity_setpoint(60.0);
   auto ros_request_one_set = proto2ros_tests::msg::HVACControlRequest();
   Convert(proto_request, &ros_request_one_set);

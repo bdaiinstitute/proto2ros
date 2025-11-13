@@ -361,8 +361,8 @@ def compute_equivalence_for_message(
             field_location = resolve(source, field_path, location)
             field = translate_field(field_descriptor, source, field_location, config)
             if field_descriptor.HasField("oneof_index"):
-                if not descriptor.oneof_decl[field_descriptor.oneof_index].name.startswith("_"):
-                    oneof_field_sets[field_descriptor.oneof_index].append(field)
+                oneof_field_sets[field_descriptor.oneof_index].append(field)
+                if not field_descriptor.proto3_optional:
                     continue
 
             if field.annotations["optional"]:
@@ -376,7 +376,8 @@ def compute_equivalence_for_message(
             oneof_field_sets,
         ):
 
-            if not oneof_fields:
+            # Skip synthetic oneofs
+            if len(oneof_fields) <= 1:
                 continue
 
             oneof_name = inflection.underscore(oneof_decl.name)

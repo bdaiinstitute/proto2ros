@@ -300,6 +300,25 @@ def test_messages_with_submessage_map_field() -> None:
     assert other_proto_fragment.grid == proto_fragment.grid
 
 
+def test_messages_with_optional_fields() -> None:
+    proto_request = test_pb2.HVACControlRequest()
+
+    ros_request_none_set = proto2ros_tests.msg.HVACControlRequest()
+    convert(proto_request, ros_request_none_set)
+
+    proto_request.humidity_setpoint = 60.0
+    ros_request_one_set = proto2ros_tests.msg.HVACControlRequest()
+    convert(proto_request, ros_request_one_set)
+
+    proto_request.temperature_setpoint.value = 25.0
+    proto_request.temperature_setpoint.scale = test_pb2.Temperature.Scale.CELSIUS
+    ros_request_two_set = proto2ros_tests.msg.HVACControlRequest()
+    convert(proto_request, ros_request_two_set)
+
+    assert ros_request_one_set.has_field > ros_request_none_set.has_field
+    assert ros_request_two_set.has_field > ros_request_one_set.has_field
+
+
 def test_messages_with_any_fields() -> None:
     proto_matrix = test_pb2.Matrix()
     proto_matrix.rows = 1

@@ -35,6 +35,7 @@ message Temperature {
 message HVACControlRequest {
     double air_flow_rate = 1;
     Temperature temperature_setpoint = 2;
+    optional double humidity_setpoint = 3;
 }
 
 // Binary recursive fragment.

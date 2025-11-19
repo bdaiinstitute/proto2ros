@@ -377,7 +377,7 @@ def compute_equivalence_for_message(
         ):
 
             # Skip synthetic oneofs
-            if len(oneof_fields) <= 1:
+            if oneof_decl.name.startswith("_"):
                 continue
 
             oneof_name = inflection.underscore(oneof_decl.name)

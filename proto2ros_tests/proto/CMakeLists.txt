@@ -1,30 +1,58 @@
 # Copyright (c) 2023 Robotics and AI Institute LLC dba RAI Institute. All rights reserved.
 find_package(Protobuf REQUIRED)
 
+get_executable_path(PROTOC_EXECUTABLE protobuf::protoc CONFIGURE)
+
+set(protoc_options -I${CMAKE_CURRENT_SOURCE_DIR})
+if(Protobuf_VERSION VERSION_GREATER_EQUAL "3.12" AND Protobuf_VERSION VERSION_LESS "3.15")
+  list(APPEND protoc_options --experimental_allow_proto3_optional)
+endif()
+
 file(MAKE_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}/bosdyn/api")
 file(TOUCH "${CMAKE_CURRENT_BINARY_DIR}/bosdyn/__init__.py")
 file(TOUCH "${CMAKE_CURRENT_BINARY_DIR}/bosdyn/api/__init__.py")
 
-protobuf_generate(
-  LANGUAGE python
-  OUT_VAR bosdyn_proto_py_sources
-  PROTOS bosdyn/api/geometry.proto
+set(bosdyn_proto_py_sources "${CMAKE_CURRENT_BINARY_DIR}/bosdyn/api/geometry_pb2.py")
+set(proto_py_sources "${CMAKE_CURRENT_BINARY_DIR}/test_pb2.py")
+set(bosdyn_proto_cpp_sources
+  "${CMAKE_CURRENT_BINARY_DIR}/bosdyn/api/geometry.pb.cc"
+  "${CMAKE_CURRENT_BINARY_DIR}/bosdyn/api/geometry.pb.h"
 )
-protobuf_generate(
-  LANGUAGE python
-  OUT_VAR proto_py_sources
-  PROTOS test.proto
+set(proto_cpp_sources
+  "${CMAKE_CURRENT_BINARY_DIR}/test.pb.cc"
+  "${CMAKE_CURRENT_BINARY_DIR}/test.pb.h"
 )
 
-protobuf_generate(
-  LANGUAGE cpp
-  OUT_VAR bosdyn_proto_cpp_sources
-  PROTOS bosdyn/api/geometry.proto
+add_custom_command(
+  OUTPUT ${bosdyn_proto_py_sources}
+  COMMAND ${PROTOC_EXECUTABLE} ${protoc_options} --python_out=${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/bosdyn/api/geometry.proto
+  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/bosdyn/api/geometry.proto
+  COMMENT "Generate Python protobuf for bosdyn/api/geometry.proto"
+  VERBATIM
 )
-protobuf_generate(
-  LANGUAGE cpp
-  OUT_VAR proto_cpp_sources
-  PROTOS test.proto
+
+add_custom_command(
+  OUTPUT ${proto_py_sources}
+  COMMAND ${PROTOC_EXECUTABLE} ${protoc_options} --python_out=${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/test.proto
+  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/test.proto
+  COMMENT "Generate Python protobuf for test.proto"
+  VERBATIM
+)
+
+add_custom_command(
+  OUTPUT ${bosdyn_proto_cpp_sources}
+  COMMAND ${PROTOC_EXECUTABLE} ${protoc_options} --cpp_out=${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/bosdyn/api/geometry.proto
+  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/bosdyn/api/geometry.proto
+  COMMENT "Generate C++ protobuf for bosdyn/api/geometry.proto"
+  VERBATIM
+)
+
+add_custom_command(
+  OUTPUT ${proto_cpp_sources}
+  COMMAND ${PROTOC_EXECUTABLE} ${protoc_options} --cpp_out=${CMAKE_CURRENT_BINARY_DIR} ${CMAKE_CURRENT_SOURCE_DIR}/test.proto
+  DEPENDS ${CMAKE_CURRENT_SOURCE_DIR}/test.proto
+  COMMENT "Generate C++ protobuf for test.proto"
+  VERBATIM
 )
 
 add_library(${PROJECT_NAME}_proto SHARED ${proto_cpp_sources} ${bosdyn_proto_cpp_sources})

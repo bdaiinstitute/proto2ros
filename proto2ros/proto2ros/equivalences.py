@@ -239,6 +239,44 @@ def translate_any_type(any_expansion: Union[Set[str], str], repeated: bool, conf
     return Type(ros_type_name)
 
 
+def resolve_field_type_override(field_type_override: str, field_name: str, repeated: bool) -> Type:
+    """Validates a configured ROS type override for a Protobuf field.
+
+    Args:
+        field_type_override: the fully qualified ROS type name configured for the field.
+        field_name: the name of the Protobuf field, for error reporting purposes.
+        repeated: whether the Protobuf field is repeated.
+
+    Returns:
+        the overridden ROS type for the field.
+
+    Raises:
+        ValueError: when the override is not shape-compatible with the field i.e. a repeated
+        field must be overridden with a fixed-size array, and a singular field must not be
+        overridden with an array.
+        ValueError: when a repeated field is overridden with an array of composite types, as
+        conversion code for those is not generated (yet).
+    """
+    override_type = Type(field_type_override)
+    if repeated:
+        if not override_type.is_fixed_size_array():
+            raise ValueError(
+                f"field type override for repeated '{field_name}' field must be a fixed-size array, "
+                f"got '{field_type_override}'",
+            )
+        if not override_type.is_primitive_type():
+            raise ValueError(
+                f"field type override for repeated '{field_name}' field must be an array of primitive types, "
+                f"got '{field_type_override}'",
+            )
+    elif override_type.is_array:
+        raise ValueError(
+            f"field type override for singular '{field_name}' field must not be an array, "
+            f"got '{field_type_override}'",
+        )
+    return override_type
+
+
 def translate_field(
     descriptor: FieldDescriptorProto,
     source: FileDescriptorProto,
@@ -259,9 +297,16 @@ def translate_field(
     Raises:
         ValueError: when the given field is of an unsupported or unknown type.
         ValueError: when an any expansion is specified for a fully typed field.
+        ValueError: when both an any expansion and a field type override are specified.
     """
     repeated = descriptor.label == FieldDescriptorProto.LABEL_REPEATED
-    any_expansion = config.any_expansions.get(protofqn(source, location))
+    field_fqn = protofqn(source, location)
+    any_expansion = config.any_expansions.get(field_fqn)
+    field_type_override = config.field_type_overrides.get(field_fqn)
+    if any_expansion and field_type_override:
+        raise ValueError(
+            f"both an any expansion and a field type override were specified for '{descriptor.name}' field",
+        )
     if any_expansion:
         if descriptor.type_name != ".google.protobuf.Any":
             raise ValueError(f"any expansion specified for '{descriptor.name}' field of {descriptor.type_name} type")
@@ -275,7 +320,12 @@ def translate_field(
             type_name = descriptor.type_name
         else:
             raise ValueError(f"unsupported field type: {descriptor.type}")
-        field_type = translate_type(type_name, repeated, config)
+        # A configured override replaces the translated ROS type wholesale, so skip translation.
+        field_type = (
+            resolve_field_type_override(field_type_override, descriptor.name, repeated)
+            if field_type_override
+            else translate_type(type_name, repeated, config)
+        )
     field = Field(field_type, to_ros_field_name(descriptor.name))
     if any_expansion:
         if not config.allow_any_casts or not isinstance(any_expansion, str):

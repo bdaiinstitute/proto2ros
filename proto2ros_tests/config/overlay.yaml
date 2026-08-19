@@ -1,6 +1,8 @@
 any_expansions:
   proto2ros_tests.Goal.target: bosdyn.api.SE2Pose
   proto2ros_tests.Goal.roi: [bosdyn.api.Polygon, bosdyn.api.Circle]
+field_type_overrides:
+  proto2ros_tests.FixedSizeVector.values: float64[3]
 message_mapping:
   bosdyn.api.Vec3: geometry_msgs/Vector3
   bosdyn.api.Quaternion: geometry_msgs/Quaternion

@@ -273,3 +273,9 @@ message Goal {
     google.protobuf.Any target = 1;
     google.protobuf.Any roi = 2;
 }
+
+// Fixed-size numeric vector, used to exercise field type overrides.
+message FixedSizeVector {
+    // Vector components, always three elements.
+    repeated double values = 1;
+}

@@ -9,6 +9,7 @@ import bosdyn.api.geometry_pb2
 import geometry_msgs.msg
 import google.protobuf.type_pb2
 import proto2ros_tests.msg
+import pytest
 import test_pb2
 from proto2ros_tests.conversions import convert
 
@@ -405,3 +406,33 @@ def test_messages_with_expanded_any_fields() -> None:
     assert len(other_proto_roi.vertexes) == 4
     for a, b in zip(proto_roi.vertexes, other_proto_roi.vertexes):
         assert a.x == b.x and a.y == b.y
+
+
+def test_field_type_overrides() -> None:
+    proto_vector = test_pb2.FixedSizeVector()
+    proto_vector.values.extend([1.0, 2.0, 3.0])
+
+    ros_vector = proto2ros_tests.msg.FixedSizeVector()
+    convert(proto_vector, ros_vector)
+    assert list(ros_vector.values) == [1.0, 2.0, 3.0]
+
+    other_proto_vector = test_pb2.FixedSizeVector()
+    convert(ros_vector, other_proto_vector)
+    assert list(other_proto_vector.values) == [1.0, 2.0, 3.0]
+
+
+def test_field_type_overrides_zero_fills_when_unset() -> None:
+    proto_vector = test_pb2.FixedSizeVector()  # values left empty
+
+    ros_vector = proto2ros_tests.msg.FixedSizeVector()
+    convert(proto_vector, ros_vector)
+    assert list(ros_vector.values) == [0.0, 0.0, 0.0]
+
+
+def test_field_type_overrides_rejects_length_mismatch() -> None:
+    proto_vector = test_pb2.FixedSizeVector()
+    proto_vector.values.extend([1.0, 2.0])  # wrong length: expected 3
+
+    ros_vector = proto2ros_tests.msg.FixedSizeVector()
+    with pytest.raises(ValueError):
+        convert(proto_vector, ros_vector)

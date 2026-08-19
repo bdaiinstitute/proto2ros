@@ -60,6 +60,24 @@ def to_ros_python_type(type_name: Union[str, BaseType]) -> str:
     return f"{to_ros_python_module_name(package_name)}.{name}"
 
 
+ROS_PRIMITIVE_ZERO_LITERALS = {
+    "bool": "False",
+    "float32": "0.0",
+    "float64": "0.0",
+    "string": '""',
+    "wstring": '""',
+}
+
+
+def to_python_zero_literal(type_: BaseType) -> str:
+    """Returns the Python literal for a zero-initialized value of a ROS primitive type.
+
+    Generated messages type check each array item on assignment, so the literal
+    must match the field type exactly (e.g. 0.0, not 0, for a float64 array).
+    """
+    return ROS_PRIMITIVE_ZERO_LITERALS.get(type_.type, "0")
+
+
 def to_pb2_python_module_name(source_path: os.PathLike) -> str:
     """Returns the Python module name for a given Protobuf source file."""
     basename, _ = os.path.splitext(source_path)
@@ -144,6 +162,7 @@ def dump_conversions_python_module(
 
     env.filters["as_pb2_python_type"] = lookup_pb2_python_type
     env.filters["as_ros_base_type"] = to_ros_base_type
+    env.filters["as_python_zero_literal"] = to_python_zero_literal
     python_conversions_template = env.get_template("conversions.py.jinja")
     return python_conversions_template.render(
         message_specifications=message_specifications,

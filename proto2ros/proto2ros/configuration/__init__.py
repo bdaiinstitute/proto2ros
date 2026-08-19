@@ -24,6 +24,12 @@ class Configuration:
         message_mapping: a mapping from fully qualified Protobuf message type names
           to fully qualified ROS message type names. This mapping comes first during
           composite type translation.
+        field_type_overrides: a mapping from fully qualified Protobuf field names (i.e. a
+          fully qualified Protobuf message type name followed by a dot "." followed by the
+          field name) to fully qualified ROS message type names. Unlike ``message_mapping``,
+          which remaps whole Protobuf message types, this overrides the ROS type of a single
+          field, leaving the Protobuf definition untouched. A repeated field may only be
+          overridden with a fixed-size array of primitive types (e.g. ``float64[36]``).
         package_mapping: a mapping from Protobuf package names to ROS package names,
           to tell where a ROS equivalent for a Protobuf construct will be found. Note
           that no checks for package existence are performed. This mapping comes
@@ -58,6 +64,7 @@ class Configuration:
     passthrough_unknown: bool = True
     package_mapping: Dict[str, str] = dataclasses.field(default_factory=dict)
     message_mapping: Dict[str, str] = dataclasses.field(default_factory=dict)
+    field_type_overrides: Dict[str, str] = dataclasses.field(default_factory=dict)
 
     any_expansions: Dict[str, Union[Set[str], str]] = dataclasses.field(default_factory=dict)
     allow_any_casts: bool = True

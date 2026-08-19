@@ -3,6 +3,7 @@
 
 #include "{{ package_name }}/conversions.hpp"
 
+#include <algorithm>
 #include <cassert>
 #include <stdexcept>
 #include <sstream>
@@ -242,7 +243,19 @@ for (const auto& blob : {{ source }}) {
 {{ destination }}.assign({{ source }}.begin(), {{ source }}.end());
         {%- endif -%}
     {%- else -%}{#- Handle primitive types case. -#}
-        {%- if spec.type.is_array -%}
+        {%- if spec.type.is_fixed_size_array() -%}
+{#- Fixed-size array. An unset (empty) Protobuf field maps to a zero-filled
+    array; any other length mismatch is a producer bug and must not be papered over. -#}
+if ({{ source }}.empty()) {
+    {{ destination }}.fill({});
+} else if ({{ source }}.size() != static_cast<int>({{ destination }}.size())) {
+    std::ostringstream message;
+    message << "{{ spec.name }} has " << {{ source }}.size() << " elements, expected {{ spec.type.array_size }}";
+    throw std::runtime_error(message.str());
+} else {
+    std::copy({{ source }}.begin(), {{ source }}.end(), {{ destination }}.begin());
+}
+        {%- elif spec.type.is_array -%}
 {{ destination }}.clear();
 {{ destination }}.reserve({{ source }}.size());
 {{ destination }}.assign({{ source }}.begin(), {{ source }}.end());

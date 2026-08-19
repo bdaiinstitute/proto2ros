@@ -174,7 +174,19 @@ for {{ input_item }} in {{ input_iterable }}:
 {{ destination }} = {{ source }}
         {%- endif -%}
     {%- else -%}{#- Handle primitive types case. -#}
+        {%- if spec.type.is_fixed_size_array() -%}
+{#- Fixed-size array, mirroring the C++ template behavior. -#}
+if len({{ source }}) == 0:
+    {{ destination }} = [{{ spec.type | as_python_zero_literal }}] * {{ spec.type.array_size }}
+elif len({{ source }}) != {{ spec.type.array_size }}:
+    raise ValueError(
+        "{{ spec.name }} has %d elements, expected {{ spec.type.array_size }}" % len({{ source }})
+    )
+else:
+    {{ destination }} = list({{ source }})
+        {%- else -%}
 {{ destination }} = {{ source }}
+        {%- endif -%}
     {%- endif -%}
 {%- endmacro -%}
 

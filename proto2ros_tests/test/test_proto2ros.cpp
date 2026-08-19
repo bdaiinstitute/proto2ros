@@ -8,10 +8,14 @@
 #include <cmath>
 #include <string_view>
 
+#include <array>
+#include <stdexcept>
+
 #include <proto2ros/conversions.hpp>
 #include <proto2ros_tests/conversions.hpp>
 #include <proto2ros_tests/msg/any_command.hpp>
 #include <proto2ros_tests/msg/diagnostic.hpp>
+#include <proto2ros_tests/msg/fixed_size_vector.hpp>
 #include <proto2ros_tests/msg/fragment.hpp>
 #include <proto2ros_tests/msg/goal.hpp>
 #include <proto2ros_tests/msg/http_request.hpp>
@@ -548,5 +552,40 @@ TEST(Proto2RosTesting, MessagesWithExpandedAnyFields) {
     EXPECT_EQ(other_proto_roi.vertexes(i).x(), proto_roi.vertexes(i).x());
     EXPECT_EQ(other_proto_roi.vertexes(i).y(), proto_roi.vertexes(i).y());
   }
+}
+
+TEST(Proto2RosTesting, FieldTypeOverrides) {
+  auto proto_vector = proto2ros_tests::FixedSizeVector();
+  proto_vector.add_values(1.0);
+  proto_vector.add_values(2.0);
+  proto_vector.add_values(3.0);
+
+  auto ros_vector = proto2ros_tests::msg::FixedSizeVector();
+  Convert(proto_vector, &ros_vector);
+  EXPECT_EQ(ros_vector.values, (std::array<double, 3>{1.0, 2.0, 3.0}));
+
+  auto other_proto_vector = proto2ros_tests::FixedSizeVector();
+  Convert(ros_vector, &other_proto_vector);
+  ASSERT_EQ(other_proto_vector.values_size(), 3);
+  for (int i = 0; i < 3; ++i) {
+    EXPECT_DOUBLE_EQ(other_proto_vector.values(i), proto_vector.values(i));
+  }
+}
+
+TEST(Proto2RosTesting, FieldTypeOverridesZeroFillsWhenUnset) {
+  auto proto_vector = proto2ros_tests::FixedSizeVector(); // values left unset
+
+  auto ros_vector = proto2ros_tests::msg::FixedSizeVector();
+  Convert(proto_vector, &ros_vector);
+  EXPECT_EQ(ros_vector.values, (std::array<double, 3>{0.0, 0.0, 0.0}));
+}
+
+TEST(Proto2RosTesting, FieldTypeOverridesRejectsLengthMismatch) {
+  auto proto_vector = proto2ros_tests::FixedSizeVector();
+  proto_vector.add_values(1.0);
+  proto_vector.add_values(2.0); // wrong length: expected 3
+
+  auto ros_vector = proto2ros_tests::msg::FixedSizeVector();
+  EXPECT_THROW(Convert(proto_vector, &ros_vector), std::runtime_error);
 }
 // NOLINTEND(readability-magic-numbers,readability-function-cognitive-complexity,cppcoreguidelines-pro-type-reinterpret-cast)
